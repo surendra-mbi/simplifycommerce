@@ -1,0 +1,23 @@
+{
+    "name": "simplifycommerce/payment",
+    "description": "api simplifycommerce for laravel",
+    "version": "1.0.0",
+    "type": "library",
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "license": "mit",
+    "authors": [
+        {
+            "name": "said said",
+            "email": "said.dev.info@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "Lib": "src/"
+        }
+    }
+}
