@@ -1,6 +1,9 @@
 <?php
+
+namespace Lib\Simplify;
+
 /*
- * Copyright (c) 2013 - 2018 MasterCard International Incorporated
+ * Copyright (c) 2013 - 2019 MasterCard International Incorporated
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are 
@@ -26,45 +29,31 @@
  * SUCH DAMAGE.
  */
 
+
 /**
- * Simplify_Authentication - encapsulates the credentials needed to make a request to the Simplify API.
- *
- * @var $publicKey - this is your API public key
- * @var $privateKey - this is your API private key
- * @var $accessToken - Oauth access token that is needed to make API requests on behalf of another user
+ * Constant values.
  */
-class Simplify_Authentication {
+class Simplify_Constants
+{
+    /**
+     * @var string VERSION SDK version information.
+     */
+    const VERSION = '1.6.0';
 
-    public $privateKey;
-    public $publicKey;
-    public $accessToken;
+    /**
+     * @var string API_BASE_LIVE_URL URL for the live API endpoint
+     */
+    const API_BASE_LIVE_URL = 'https://api.simplify.com/v1/api';
 
-    function __construct() {
-        $args = func_get_args();
-        switch( func_num_args() ) {
-            case 1:
-                self::__construct1( $args[0] );
-                break;
-            case 2:
-                self::__construct2( $args[0], $args[1] );
-                break;
-            case 3:
-                self::__construct3( $args[0], $args[1], $args[2] );
-        }
-    }
+    /**
+     * @var string API_BASE_SANDBOX_URL URL for the sandbox API endpoint
+     */
+    const API_BASE_SANDBOX_URL = 'https://sandbox.simplify.com/v1/api';
 
-    function __construct1($accessToken) {
-        $this->accessToken = $accessToken;
-    }
-
-    function __construct2($publicKey, $privateKey) {
-        $this->publicKey = $publicKey;
-        $this->privateKey = $privateKey;
-    }
-
-    function __construct3($publicKey, $privateKey, $accessToken) {
-        $this->publicKey = $publicKey;
-        $this->privateKey = $privateKey;
-        $this->accessToken = $accessToken;
-    }
+    /**
+     * @var string OAUTH_BASE_URL URL for the oauth enpoint
+     */
+    const OAUTH_BASE_URL = 'https://www.simplify.com/commerce/oauth';
 }
+
+?>

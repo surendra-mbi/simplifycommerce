@@ -1,6 +1,12 @@
 <?php
+
+namespace Lib\Simplify;
+
+use Lib\Simplify\Simplify_Object;
+use Lib\Simplify\Simplify_Webhook;
+use Lib\Simplify\Simplify_PaymentsApi;
 /*
- * Copyright (c) 2013 - 2018 MasterCard International Incorporated
+ * Copyright (c) 2013 - 2019 MasterCard International Incorporated
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are 
@@ -27,26 +33,20 @@
  */
 
 
-class Simplify_Refund extends Simplify_Object {
+class Simplify_Webhook extends Simplify_Object {
     /**
-     * Creates an Simplify_Refund object
+     * Creates an Simplify_Webhook object
      * @param     array $hash a map of parameters; valid keys are:<dl style="padding-left:10px;">
-     *     <dt><tt>amount</tt></dt>    <dd>Amount of the refund in the smallest unit of your currency. Example: 100 = $1.00 <strong>required </strong></dd>
-     *     <dt><tt>payment</tt></dt>    <dd>ID of the payment for the refund </dd>
-     *     <dt><tt>reason</tt></dt>    <dd>Reason for the refund </dd>
-     *     <dt><tt>reference</tt></dt>    <dd>Custom reference field to be used with outside systems. </dd>
-     *     <dt><tt>replayId</tt></dt>    <dd>An identifier that can be sent to uniquely identify a refund request to facilitate retries due to I/O related issues. This identifier must be unique for your account (sandbox or live) across all of your refunds. If supplied, we will check for a refund on your account that matches this identifier. If found we will return an identical response to that of the original request. [max length: 50, min length: 1] </dd>
-     *     <dt><tt>statementDescription.name</tt></dt>    <dd>Merchant name. <strong>required </strong></dd>
-     *     <dt><tt>statementDescription.phoneNumber</tt></dt>    <dd>Merchant contact phone number. </dd></dl>
+     *     <dt><tt>url</tt></dt>    <dd>Endpoint URL <strong>required </strong></dd></dl>
      * @param     $authentication -  information used for the API call.  If no value is passed the global keys Simplify::public_key and Simplify::private_key are used.  <i>For backwards compatibility the public and private keys may be passed instead of the authentication object.<i/>
-     * @return    Refund a Refund object.
+     * @return    Webhook a Webhook object.
      */
-    static public function createRefund($hash, $authentication = null) {
+    static public function createWebhook($hash, $authentication = null) {
 
         $args = func_get_args();
         $authentication = Simplify_PaymentsApi::buildAuthenticationObject($authentication, $args, 2);
 
-        $instance = new Simplify_Refund();
+        $instance = new Simplify_Webhook();
         $instance->setAll($hash);
 
         $object = Simplify_PaymentsApi::createObject($instance, $authentication);
@@ -55,24 +55,41 @@ class Simplify_Refund extends Simplify_Object {
 
 
 
+
        /**
-        * Retrieve Simplify_Refund objects.
+        * Deletes an Simplify_Webhook object.
+        *
+        * @param     $authentication -  information used for the API call.  If no value is passed the global keys Simplify::public_key and Simplify::private_key are used.  <i>For backwards compatibility the public and private keys may be passed instead of the authentication object.</i>
+        */
+        public function deleteWebhook($authentication = null) {
+
+            $args = func_get_args();
+            $authentication = Simplify_PaymentsApi::buildAuthenticationObject($authentication, $args, 1);
+
+            $obj = Simplify_PaymentsApi::deleteObject($this, $authentication);
+            $this->properties = null;
+            return true;
+        }
+
+
+       /**
+        * Retrieve Simplify_Webhook objects.
         * @param     array criteria a map of parameters; valid keys are:<dl style="padding-left:10px;">
-        *     <dt><tt>filter</tt></dt>    <dd><table class="filter_list"><tr><td>filter.id</td><td>Filter by the refund Id</td></tr><tr><td>filter.text</td><td>Filter by the refund description text</td></tr><tr><td>filter.replayId</td><td>Filter by the compoundReplayId</td></tr><tr><td>filter.authCode</td><td>Filter by the authorization code (Not authorization ID)</td></tr><tr><td>filter.amount</td><td>Filter by the refund amount (in the smallest unit of your currency)</td></tr><tr><td>filter.dateCreatedMin<sup>*</sup></td><td>Filter by the minimum created date you are searching for - Date in UTC millis</td></tr><tr><td>filter.dateCreatedMax<sup>*</sup></td><td>Filter by the maximum created date you are searching for - Date in UTC millis</td></tr><tr><td>filter.deposit</td><td>Filter by the deposit id</td></tr><tr><td>filter.q</td><td>You can use this to filter by the Id, the authCode or the amount of the refund</td></tr></table><br><sup>*</sup>Use dateCreatedMin with dateCreatedMax in the same filter if you want to search between two created dates  </dd>
+        *     <dt><tt>filter</tt></dt>    <dd>Filters to apply to the list.  </dd>
         *     <dt><tt>max</tt></dt>    <dd>Allows up to a max of 50 list items to return. [min value: 0, max value: 50, default: 20]  </dd>
         *     <dt><tt>offset</tt></dt>    <dd>Used in paging of the list.  This is the start offset of the page. [min value: 0, default: 0]  </dd>
-        *     <dt><tt>sorting</tt></dt>    <dd>Allows for ascending or descending sorting of the list.  The value maps properties to the sort direction (either <tt>asc</tt> for ascending or <tt>desc</tt> for descending).  Sortable properties are: <tt> id</tt><tt> amount</tt><tt> description</tt><tt> dateCreated</tt><tt> paymentDate</tt>.</dd></dl>
+        *     <dt><tt>sorting</tt></dt>    <dd>Allows for ascending or descending sorting of the list.  The value maps properties to the sort direction (either <tt>asc</tt> for ascending or <tt>desc</tt> for descending).  Sortable properties are: <tt> dateCreated</tt>.</dd></dl>
         * @param     $authentication -  information used for the API call.  If no value is passed the global keys Simplify::public_key and Simplify::private_key are used.  <i>For backwards compatibility the public and private keys may be passed instead of the authentication object.</i>
-        * @return    ResourceList a ResourceList object that holds the list of Refund objects and the total
-        *            number of Refund objects available for the given criteria.
+        * @return    ResourceList a ResourceList object that holds the list of Webhook objects and the total
+        *            number of Webhook objects available for the given criteria.
         * @see       ResourceList
         */
-        static public function listRefund($criteria = null, $authentication = null) {
+        static public function listWebhook($criteria = null, $authentication = null) {
 
             $args = func_get_args();
             $authentication = Simplify_PaymentsApi::buildAuthenticationObject($authentication, $args, 2);
 
-            $val = new Simplify_Refund();
+            $val = new Simplify_Webhook();
             $list = Simplify_PaymentsApi::listObject($val, $criteria, $authentication);
 
             return $list;
@@ -80,18 +97,18 @@ class Simplify_Refund extends Simplify_Object {
 
 
         /**
-         * Retrieve a Simplify_Refund object from the API
+         * Retrieve a Simplify_Webhook object from the API
          *
-         * @param     string id  the id of the Refund object to retrieve
+         * @param     string id  the id of the Webhook object to retrieve
          * @param     $authentication -  information used for the API call.  If no value is passed the global keys Simplify::public_key and Simplify::private_key are used.  <i>For backwards compatibility the public and private keys may be passed instead of the authentication object.</i>
-         * @return    Refund a Refund object
+         * @return    Webhook a Webhook object
          */
-        static public function findRefund($id, $authentication = null) {
+        static public function findWebhook($id, $authentication = null) {
 
             $args = func_get_args();
             $authentication = Simplify_PaymentsApi::buildAuthenticationObject($authentication, $args, 2);
 
-            $val = new Simplify_Refund();
+            $val = new Simplify_Webhook();
             $val->id = $id;
 
             $obj = Simplify_PaymentsApi::findObject($val, $authentication);
@@ -99,10 +116,29 @@ class Simplify_Refund extends Simplify_Object {
             return $obj;
         }
 
+
+        /**
+         * Updates an Simplify_Webhook object.
+         *
+         * The properties that can be updated:
+         * <dl style="padding-left:10px;">
+         *     <dt><tt>url</tt></dt>    <dd>Endpoint URL <strong>required </strong></dd></dl>
+         * @param     $authentication -  information used for the API call.  If no value is passed the global keys Simplify::public_key and Simplify::private_key are used.  <i>For backwards compatibility the public and private keys may be passed instead of the authentication object.</i>
+         * @return    Webhook a Webhook object.
+         */
+        public function updateWebhook($authentication = null)  {
+
+            $args = func_get_args();
+            $authentication = Simplify_PaymentsApi::buildAuthenticationObject($authentication, $args, 1);
+
+            $object = Simplify_PaymentsApi::updateObject($this, $authentication);
+            return $object;
+        }
+
     /**
      * @ignore
      */
     public function getClazz() {
-        return "Refund";
+        return "Webhook";
     }
 }

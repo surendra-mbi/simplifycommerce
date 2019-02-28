@@ -1,6 +1,9 @@
 <?php
+
+namespace Lib\Simplify;
+
 /*
- * Copyright (c) 2013 - 2018 MasterCard International Incorporated
+ * Copyright (c) 2013 - 2019 MasterCard International Incorporated
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are 
@@ -26,19 +29,45 @@
  * SUCH DAMAGE.
  */
 
-
 /**
- * Class Simplify_ResourceList represents a collection of domain objects returned by one of the list<Domain>() methods.
+ * Simplify_Authentication - encapsulates the credentials needed to make a request to the Simplify API.
+ *
+ * @var $publicKey - this is your API public key
+ * @var $privateKey - this is your API private key
+ * @var $accessToken - Oauth access token that is needed to make API requests on behalf of another user
  */
-class Simplify_ResourceList {
+class Simplify_Authentication {
 
-    /**
-     * @var array $list the list of domain objects.
-     */
-    public $list = array();
+    public $privateKey;
+    public $publicKey;
+    public $accessToken;
 
-    /**
-     * @var int $total the total number of object available.
-     */
-    public $total = 0;
+    function __construct() {
+        $args = func_get_args();
+        switch( func_num_args() ) {
+            case 1:
+                self::__construct1( $args[0] );
+                break;
+            case 2:
+                self::__construct2( $args[0], $args[1] );
+                break;
+            case 3:
+                self::__construct3( $args[0], $args[1], $args[2] );
+        }
+    }
+
+    function __construct1($accessToken) {
+        $this->accessToken = $accessToken;
+    }
+
+    function __construct2($publicKey, $privateKey) {
+        $this->publicKey = $publicKey;
+        $this->privateKey = $privateKey;
+    }
+
+    function __construct3($publicKey, $privateKey, $accessToken) {
+        $this->publicKey = $publicKey;
+        $this->privateKey = $privateKey;
+        $this->accessToken = $accessToken;
+    }
 }

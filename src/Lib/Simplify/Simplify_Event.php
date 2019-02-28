@@ -1,6 +1,13 @@
 <?php
+
+namespace Lib\Simplify;
+
+
+use InvalidArgumentException;
+use Lib\Simplify\Simplify_Object;
+use Lib\Simplify\Simplify_PaymentsApi;
 /*
- * Copyright (c) 2013 - 2018 MasterCard International Incorporated
+ * Copyright (c) 2013 - 2019 MasterCard International Incorporated
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are 
@@ -27,30 +34,38 @@
  */
 
 
-/**
- * Constant values.
- */
-class Simplify_Constants
-{
-    /**
-     * @var string VERSION SDK version information.
-     */
-    const VERSION = '1.6.0';
+class Simplify_Event extends Simplify_Object {
 
     /**
-     * @var string API_BASE_LIVE_URL URL for the live API endpoint
+     * Creates an Event object
+     * @param     array $hash A map of parameters; valid keys are:
+     *     <dt><code>paylod</code></dt>    <dd>The raw JWS payload. </dd> <strong>required</strong>
+     *     <dt><code>url</code></dt>    <dd>The URL for the webhook.  If present it must match the URL registered for the webhook.</dd>
+     * @param  $authentication Object that contains the API public and private keys.  If null the values of the static
+     *         Simplify::$publicKey and Simplify::$privateKey will be used.
+     * @return Payments_Event an Event object.
+     * @throws InvalidArgumentException
      */
-    const API_BASE_LIVE_URL = 'https://api.simplify.com/v1/api';
+    static public function createEvent($hash, $authentication = null) {
+
+        $args = func_get_args();
+        $authentication = Simplify_PaymentsApi::buildAuthenticationObject($authentication, $args, 2);
+
+        $paymentsApi = new Simplify_PaymentsApi();
+
+        $jsonObject = $paymentsApi->jwsDecode($hash, $authentication);
+
+        if ($jsonObject['event'] == null) {
+            throw new InvalidArgumentException("Incorect data in webhook event");
+        }   
+
+        return  $paymentsApi->convertFromHashToObject($jsonObject['event'], self::getClazz());
+    }
 
     /**
-     * @var string API_BASE_SANDBOX_URL URL for the sandbox API endpoint
+     * @ignore
      */
-    const API_BASE_SANDBOX_URL = 'https://sandbox.simplify.com/v1/api';
-
-    /**
-     * @var string OAUTH_BASE_URL URL for the oauth enpoint
-     */
-    const OAUTH_BASE_URL = 'https://www.simplify.com/commerce/oauth';
+    static public function getClazz() {
+        return "Event";
+    }
 }
-
-?>

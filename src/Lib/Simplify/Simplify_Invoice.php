@@ -1,6 +1,12 @@
 <?php
+
+namespace Lib\Simplify;
+
+use Lib\Simplify\Simplify_Object;
+use Lib\Simplify\Simplify_Invoice;
+use Lib\Simplify\Simplify_PaymentsApi;
 /*
- * Copyright (c) 2013 - 2018 MasterCard International Incorporated
+ * Copyright (c) 2013 - 2019 MasterCard International Incorporated
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are 

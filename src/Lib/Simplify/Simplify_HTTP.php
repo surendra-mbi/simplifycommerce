@@ -1,6 +1,21 @@
 <?php
+
+namespace Lib\Simplify;
+
+use Exception;
+use Lib\Simplify;
+use InvalidArgumentException;
+use Lib\Simplify\Simplify_HTTP;
+use Lib\Simplify\Simplify_Constants;
+use Lib\Simplify\Exception\Simplify_ApiException;
+use Lib\Simplify\Exception\Simplify_SystemException;
+use Lib\Simplify\Exception\Simplify_BadRequestException;
+use Lib\Simplify\Exception\Simplify_NotAllowedException;
+use Lib\Simplify\Exception\Simplify_ApiConnectionException;
+use Lib\Simplify\Exception\Simplify_AuthenticationException;
+use Lib\Simplify\Exception\Simplify_ObjectNotFoundException;
 /*
- * Copyright (c) 2013 - 2018 MasterCard International Incorporated
+ * Copyright (c) 2013 - 2019 MasterCard International Incorporated
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are 
@@ -148,6 +163,8 @@ class Simplify_HTTP
             return $object;
         }
 
+        die;
+
         if ($status == self::HTTP_REDIRECTED) {
             throw new Simplify_BadRequestException("Unexpected response code returned from the API, have you got the correct URL?", $status, $object);
         } else if ($status == self::HTTP_BAD_REQUEST) {
@@ -264,7 +281,7 @@ class Simplify_HTTP
 
             return $bodyStr;
 
-        } catch (ApiException $e) {
+        } catch (Simplify_ApiException $e) {
             throw $e;
         } catch (Exception $e) {
             $this->jwsAuthError("Exception during JWS decoding: " . $e);

@@ -27,36 +27,30 @@ PHP SDK for Simplify Commerce
 
                                   ]
 
+            
 
 
-  Using the SDK
+
+  Using the Laravel Package
   --------------
 
-  To run a payment though Simplify Commerce use the following
-  script substituting your public and private API keys:
-
+  Use the following script while using package in laravel project
+  replace public and private key with your keys
     <?php
-        require_once("Simplify.php");
 
-        Simplify::$publicKey = 'YOUR_PUBLIC_API_KEY';
-        Simplify::$privateKey = 'YOUR_PRIVATE_API_KEY';
+      use Lib\Simplify;
+      use Lib\Simplify\Simplify_Payment;
+      
+      Simplify::$publicKey = 'YOUR_PUBLIC_KEY';
+      Simplify::$privateKey = 'YOUR_PRIVATE_KEY';
+      
+      $obj = Simplify_Payment::findPayment('PAYMENT_ID');
 
-        $payment = Simplify_Payment::createPayment(array(
-            "card" => array(
-                 "number" => "5555555555554444",
-                 "expMonth" => 11,
-                 "expYear" => 15,
-                 "cvc" => "123"
-            ),
-            'amount' => '1000',
-            'description' => 'prod description',
-            'currency' => 'USD'
-        ));
-
-        print_r($payment);
-
+      echo '<pre>';
+      print_r($obj);
+      echo '</pre';
+      
     ?>
-
 
   For more examples see https://www.simplify.com/commerce/docs/sdk/php.
 
