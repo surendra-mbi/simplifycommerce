@@ -17,7 +17,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Lib\\": "src/"
+            "Lib\\": "src/Lib/"
         }
     }
 }
